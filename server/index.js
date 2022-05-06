@@ -1,10 +1,13 @@
-import express from "express";
-const app = express();
+import app from "./app";
 import { PORT } from "./config/config";
+import { User } from "./models/User";
 
-app.get("/", function (req, res) {
-  res.send("hola mundo");
-});
-app.listen(PORT, function () {
-  console.log("server on port", PORT);
-});
+User.sync({ force: false })
+  .then(() => {
+    app.listen(PORT, function () {
+      console.log("db connected and server on port", PORT);
+    });
+  })
+  .catch((err) => {
+    console.log("upps  err");
+  });
