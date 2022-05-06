@@ -1,13 +1,13 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PORT = exports.DBUSERNAME = exports.DBPASSWORD = exports.DBNAME = void 0;
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 _dotenv["default"].config();
 

@@ -1,12 +1,12 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 var _app = _interopRequireDefault(require("./app"));
 
 var _config = require("./config/config");
 
 var _User = require("./models/User");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 _User.User.sync({
   force: false
