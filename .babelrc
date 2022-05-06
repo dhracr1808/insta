@@ -1,4 +1,5 @@
 {
     "presets": ["@babel/preset-env"],
+    "ignore": ["server/public/**/*.js"],
     "plugins": ["@babel/plugin-transform-runtime"]
 }
