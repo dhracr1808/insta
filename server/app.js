@@ -1,5 +1,11 @@
 import express from "express";
 import path from "path";
+import cokieParser from "cookie-parser";
+import sesion from "express-session";
+import passport from "passport";
+import "./config/passport";
+
+import fileUpload from "express-fileupload";
 const app = express();
 import router from "./routes";
 
@@ -7,6 +13,17 @@ import router from "./routes";
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cokieParser());
+app.use(sesion({ secret: "instapp", saveUninitialized: true, resave: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(
+  fileUpload({
+    tempFileDir: "./upload",
+    useTempFiles: true,
+  })
+);
 
 /*================ Routes ===========================*/
 app.use("/api", router);
