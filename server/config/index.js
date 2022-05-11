@@ -1,0 +1,1 @@
+export { CredencialsMailer } from "./credentials";
