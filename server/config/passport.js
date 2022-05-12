@@ -1,6 +1,26 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
 import { User } from "../models/User";
+import { TOKEN_SECRET, clientId, clientSecret, callbackURL } from "./config";
+/* =================== GOOGLE STRATEGY ====================== */
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+passport.use(
+  new GoogleStrategy(
+    { clientID: clientId, clientSecret, callbackURL },
+
+    async function (accessToken, refreshToken, profile, done) {
+      const email = profile.emails[0].value;
+      const name = profile.name.givenName;
+      const image = profile.photos;
+      const user = await User.findOrCreate({
+        where: { email },
+        defaults: { image, password: TOKEN_SECRET, active: true, name },
+      });
+      return done(null, user[0]);
+    }
+  )
+);
+/* =================== LOCAL STRATEGY ====================== */
 
 passport.use(
   new Strategy(
@@ -20,14 +40,11 @@ passport.use(
   )
 );
 
-passport.serializeUser((user, done) => done(null, user.id));
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
 
 passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await User.findByPk(id);
-    done(null, user);
-  } catch (error) {
-    console.log(error);
-    done(null, error);
-  }
+  const user = await User.findByPk(id);
+  done(null, user);
 });

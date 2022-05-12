@@ -1,5 +1,5 @@
 import { createMail } from "../services/mailer";
-import { User } from "../models/User";
+import { Post, User } from "../models";
 import { generateToken } from "../config/token";
 import { mailActive, mailRestore } from "../views/mails";
 import passport from "passport";
@@ -61,7 +61,6 @@ export const authenticate = (req, res, next) => {
 
 export const activeAcount = async (req, res) => {
   const { email } = req.user;
-  console.log(req.user);
   await User.update({ active: true }, { where: { email } });
   res.redirect("./me");
 };
@@ -69,7 +68,7 @@ export const activeAcount = async (req, res) => {
 export const profile = (req, res) => {
   const message = req.user.email;
   if (!req.user.active) return res.status(401).send({ message });
-  return res.json(req.user);
+  return res.send(req.user);
 };
 
 export const updatePassword = async (req, res) => {
@@ -83,3 +82,12 @@ export const updatePassword = async (req, res) => {
     res.send(error);
   }
 };
+
+export const googleAuth = passport.authenticate("google", {
+  scope: ["email", "profile"],
+});
+
+export const googleCallback = passport.authenticate("google", {
+  failureRedirect: "/",
+  successRedirect: "/api/users/me",
+});

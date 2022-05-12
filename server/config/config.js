@@ -11,3 +11,7 @@ export const refreshToken = process.env.refreshToken;
 export const accessToken = process.env.accessToken;
 export const TOKEN_SECRET = process.env.TOKEN_SECRET;
 export const EMAIL_USER = process.env.EMAIL_USER;
+export const callbackURL = process.env.callbackURL;
+export const cloud_name = process.env.cloud_name;
+export const api_key = process.env.api_key;
+export const api_secret = process.env.api_secret;

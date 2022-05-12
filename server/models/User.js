@@ -6,6 +6,7 @@ export class User extends S.Model {}
 
 User.init(
   {
+    name: { type: S.STRING },
     email: {
       type: S.STRING,
       allowNull: false,

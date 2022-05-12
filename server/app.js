@@ -6,6 +6,7 @@ import passport from "passport";
 import "./config/passport";
 
 import fileUpload from "express-fileupload";
+import { uploadFiles } from "./config";
 const app = express();
 import router from "./routes";
 
@@ -18,12 +19,7 @@ app.use(sesion({ secret: "instapp", saveUninitialized: true, resave: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(
-  fileUpload({
-    tempFileDir: "./upload",
-    useTempFiles: true,
-  })
-);
+app.use(fileUpload(uploadFiles));
 
 /*================ Routes ===========================*/
 app.use("/api", router);

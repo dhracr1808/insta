@@ -1,1 +1,3 @@
-export { CredencialsMailer } from "./credentials";
+export { CredencialsMailer, apiCloudinary } from "./credentials";
+
+export { uploadFiles } from "./variables";
