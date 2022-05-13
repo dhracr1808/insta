@@ -2,7 +2,7 @@
 export { getUsers, createUser, getUser, changePassword } from "./user";
 export { authenticate, updatePassword } from "./user";
 export { activeAcount, profile, googleAuth } from "./user";
-export { googleCallback } from "./user";
+export { googleCallback, onePostsUser } from "./user";
 /*================ Posts =======================*/
 export { getPosts, getPost, createPost } from "./post";
 export { getPostsUser, deletePost } from "./post";
@@ -11,4 +11,4 @@ export { getPostsUser, deletePost } from "./post";
   return arregloDeObjetos(num, pal, [...arr, { [pal]: i }], i + 1);
 } */
 
-export { allPromises, onePromise } from "./functions";
+export { allPromises, onePromise, routeNext, findPost } from "./functions";

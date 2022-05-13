@@ -1,6 +1,7 @@
 import { Post, User } from "../models";
 import fs from "fs-extra";
 import { allPromises as promAll, onePromise as promOne } from "./";
+import { routeNext } from "./functions";
 
 export const getPosts = async (req, res, next) => {
   try {
@@ -27,10 +28,11 @@ export const getPost = async (req, res, next) => {
   }
 };
 
-export const getPostsUser = async (req, res) => {
+export const getPostsUser = async (req, res, next) => {
   try {
     const { id } = req.user;
     const posts = await Post.findAll({ where: { userId: id } });
+    if (req.params.id) return routeNext(req, res, next, posts);
     res.json(posts);
   } catch (error) {
     res.status(500).json(error);
@@ -43,7 +45,7 @@ export const createPost = async (req, res, next) => {
     let image = null;
     if (files) image = files[0] ? await promAll(files) : await promOne(files);
     const newPost = await Post.create({ ...req.body, image });
-    await newPost.setUser(1);
+    await newPost.setUser(req.user.id);
     res.status(201).json(newPost);
   } catch (error) {
     res.status(500).json({ message: error.message });

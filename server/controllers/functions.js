@@ -1,5 +1,6 @@
 import { uploadFile, deleteFile } from "../services";
 import fs from "fs-extra";
+
 export const allPromises = async (files, action = "upload") => {
   if (action === "upload") {
     return await Promise.all(
@@ -24,3 +25,10 @@ export const onePromise = async ({ tempFilePath }) => {
   await fs.remove(tempFilePath);
   return [{ public_id, secure_url }];
 };
+
+export const routeNext = (req, res, next, value) => {
+  req.data = value;
+  next();
+};
+
+export const findPost = (arr, idpost) => arr.find(({ id }) => id === +idpost);

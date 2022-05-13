@@ -1,5 +1,6 @@
 import { createMail } from "../services/mailer";
 import { Post, User } from "../models";
+import { findPost } from "./functions";
 import { generateToken } from "../config/token";
 import { mailActive, mailRestore } from "../views/mails";
 import passport from "passport";
@@ -44,7 +45,7 @@ export const changePassword = async (req, res) => {
     await createMail(mailRestore(email, token));
     res.send({ token });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -60,15 +61,23 @@ export const authenticate = (req, res, next) => {
 };
 
 export const activeAcount = async (req, res) => {
-  const { email } = req.user;
-  await User.update({ active: true }, { where: { email } });
-  res.redirect("./me");
+  try {
+    const { email } = req.user;
+    await User.update({ active: true }, { where: { email } });
+    res.redirect("./me");
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const profile = (req, res) => {
-  const message = req.user.email;
-  if (!req.user.active) return res.status(401).send({ message });
-  return res.send(req.user);
+  try {
+    const message = req.user.email;
+    if (!req.user.active) return res.status(401).send({ message });
+    return res.send(req.user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const updatePassword = async (req, res) => {
@@ -79,7 +88,17 @@ export const updatePassword = async (req, res) => {
     user.changePassword(password);
     res.sendStatus(200);
   } catch (error) {
-    res.send(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const onePostsUser = async (req, res) => {
+  try {
+    const post = findPost(req.data, req.params.id);
+    if (!post) return res.status(404).json({ message: "post no existe" });
+    res.send(post);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
